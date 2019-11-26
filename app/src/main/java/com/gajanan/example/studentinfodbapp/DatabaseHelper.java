@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public final static String DATBASE_NAME = "Student.db";
+    public final static String DATABASE_NAME = "Student.db";
 
     public final static String TABLE_NAME = "student_table";
 
@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(@Nullable Context context) {
-        super(context, DATBASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override

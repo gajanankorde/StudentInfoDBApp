@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         edtName.requestFocus();
 
-
         addData();
         getData();
         viewAll();
@@ -264,10 +263,8 @@ public class MainActivity extends AppCompatActivity {
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtId.setText("");
-                edtName.setText("");
-                edtEmail.setText("");
-                edtMobNumber.setText("");
+
+                clear();
 
             }
         });
