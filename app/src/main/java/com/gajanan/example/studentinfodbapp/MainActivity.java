@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                         boolean isInserted = myDB.insertData(name,email,mobNumber);
                         if (isInserted == true){
-                            Toast.makeText(MainActivity.this, "Data Inserted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Data Inserted Successfully..", Toast.LENGTH_SHORT).show();
                             clear();
                         } else {
                             Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -93,40 +93,66 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String id = edtId.getText().toString();
-
-                if (id.equals(String.valueOf(""))){
-                    edtId.setError("Enter ID");
-
-                    return;
-                }
+                String email=edtEmail.getText().toString();
+                String name="";
+                String mobNumber="";
 
 
-                if (myDB.checkUserId(id)){
+                if (!(email.isEmpty() && id.equals(String.valueOf("")))){
 
-                    Cursor cursor = myDB.getData(id);
+                    if (myDB.checkUser(email)){
 
-                    String name="";
-                    String email="";
-                    String mobNumber="";
+                        Cursor cursor = myDB.getDataUsingEmail(email);
 
-                    if (cursor.moveToNext()){
+                        if (cursor.moveToNext()){
 
-                        id=cursor.getString(0);
-                        name=cursor.getString(1);
-                        email=cursor.getString(2);
-                        mobNumber=cursor.getString(3);
+                            id=cursor.getString(0);
+                            name=cursor.getString(1);
+                            email=cursor.getString(2);
+                            mobNumber=cursor.getString(3);
+                        }
+
+                        edtId.setText(id);
+                        edtName.setText(name);
+                        edtEmail.setText(email);
+                        edtMobNumber.setText(mobNumber);
+
+
+                    }
+                    else if (myDB.checkUserId(id)){
+
+                        Cursor cursor = myDB.getData(id);
+
+                        if (cursor.moveToNext()){
+
+                            id=cursor.getString(0);
+                            name=cursor.getString(1);
+                            email=cursor.getString(2);
+                            mobNumber=cursor.getString(3);
+                        }
+
+                        edtId.setText(id);
+                        edtName.setText(name);
+                        edtEmail.setText(email);
+                        edtMobNumber.setText(mobNumber);
                     }
 
-                    edtId.setText(id);
-                    edtName.setText(name);
-                    edtEmail.setText(email);
-                    edtMobNumber.setText(mobNumber);
-
-
-                }else {
-                    Toast.makeText(MainActivity.this, "User Does not Exists", Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(MainActivity.this, "User Does not Exists", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
+                else {
+                    if (id.isEmpty()) {
+                        edtId.setError("Enter ID");
+                        edtId.requestFocus();
+                        return;
+                    }
+                    else {
+                        edtEmail.setError("Enter email");
+                        edtEmail.requestFocus();
+                        return;
+                    }
+                }
 
             }
         });
@@ -139,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Cursor cursor = myDB.getAllData();
 
-                //small test
                 if (cursor.getCount() == 0){
                     showMessage("Error", "Nothing found in DB");
                     return;
@@ -151,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
                     buffer.append("ID: "+cursor.getString(0)+"\n");
                     buffer.append("Name: "+cursor.getString(1)+"\n");
                     buffer.append("Email: "+cursor.getString(2)+"\n");
-                    //buffer.append("CC: "+cursor.getString(3)+"\n\n");
                     buffer.append("Mobile Number: "+cursor.getString(3)+"\n\n");
                 }
                 showMessage("All data", buffer.toString());
@@ -179,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     Integer updateRow = myDB.updateData(id, name, email, mobNumber);
 
                     if (updateRow > 0){
-                        Toast.makeText(MainActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Data Updated successfully", Toast.LENGTH_SHORT).show();
                         clear();
                     } else {
                         Toast.makeText(MainActivity.this, "Invalid id", Toast.LENGTH_SHORT).show();
@@ -208,9 +232,8 @@ public class MainActivity extends AppCompatActivity {
                     Integer deletedRow = myDB.deleteData(edtId.getText().toString());
 
                     if (deletedRow > 0){
-                        Toast.makeText(MainActivity.this, "Delete Success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Data Deleted Successfully..", Toast.LENGTH_SHORT).show();
                     } else {
-                        //Toast.makeText(MainActivity.this, "OOPSSS!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(MainActivity.this, "Invalid ID", Toast.LENGTH_SHORT).show();
                     }
                 }

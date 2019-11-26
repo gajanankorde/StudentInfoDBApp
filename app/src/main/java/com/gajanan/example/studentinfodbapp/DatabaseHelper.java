@@ -85,6 +85,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getDataUsingEmail(String email){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM "+TABLE_NAME+" WHERE EMAIL='"+email+"'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        return cursor;
+
+
+    }
+
     public Integer deleteData(String id){
         SQLiteDatabase db = this.getWritableDatabase();
 
